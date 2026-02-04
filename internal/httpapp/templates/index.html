@@ -1,0 +1,60 @@
+{{define "index"}}
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{.SiteTitle}}</title>
+  <style>
+    :root {
+      --bg: #f7f2e9;
+      --ink: #2b2b2b;
+      --accent: #2d6a4f;
+      --muted: #6b6b6b;
+    }
+    body {
+      margin: 0;
+      font-family: "Georgia", "Times New Roman", serif;
+      background: linear-gradient(180deg, #f7f2e9 0%, #efe7d7 100%);
+      color: var(--ink);
+    }
+    header {
+      padding: 32px 20px 12px;
+      border-bottom: 2px solid #d6c9b7;
+    }
+    header h1 { margin: 0; font-size: 32px; }
+    header p { margin: 6px 0 0; color: var(--muted); }
+    main { max-width: 820px; margin: 0 auto; padding: 20px; }
+    .post {
+      background: #fff;
+      border: 1px solid #e2d7c6;
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 8px 18px rgba(0,0,0,0.06);
+    }
+    .post h2 { margin: 0 0 6px; font-size: 22px; }
+    .post a { color: var(--accent); text-decoration: none; }
+    .meta { color: var(--muted); font-size: 14px; }
+    .tags { margin-top: 8px; font-size: 13px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>{{.SiteTitle}}</h1>
+    <p>{{.Description}}</p>
+  </header>
+  <main>
+    {{range .Posts}}
+      <article class="post">
+        <h2><a href="/post/{{.Slug}}">{{.Title}}</a></h2>
+        <div class="meta">{{.PublishedAt}} · {{$.AuthorNickname}}</div>
+        <div class="tags">{{.Tags}}</div>
+      </article>
+    {{else}}
+      <p>Пока постов нет. Скоро будет первая запись.</p>
+    {{end}}
+  </main>
+</body>
+</html>
+{{end}}

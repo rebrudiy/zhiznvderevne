@@ -1,0 +1,51 @@
+groups:
+  - name: app
+    rules:
+      - alert: InstanceDown
+        expr: up{job="app"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "App is down"
+          description: "No scrape target for app for 1 minute."
+
+      - alert: HighErrorRate
+        expr: |
+          (sum(rate(blog_http_requests_total{status=~"5.."}[5m])) / sum(rate(blog_http_requests_total[5m]))) > 0.05
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High 5xx rate"
+          description: "5xx responses > 5% for 5 minutes."
+
+      - alert: HighLatency
+        expr: |
+          histogram_quantile(0.95, sum(rate(blog_http_request_duration_seconds_bucket[5m])) by (le)) > 1.0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High latency"
+          description: "p95 latency > 1s for 5 minutes."
+
+  - name: infra
+    rules:
+      - alert: PostgresDown
+        expr: up{job="postgres"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Postgres is down"
+          description: "postgres-exporter target is down."
+
+      - alert: NodeExporterDown
+        expr: up{job="node"} == 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Node exporter is down"
+          description: "node-exporter target is down."

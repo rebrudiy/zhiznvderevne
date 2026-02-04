@@ -1,0 +1,4 @@
+xn--b1aafeabbii5cf7a5l.xn--p1ai {
+  reverse_proxy app:8080
+  encode gzip zstd
+}
