@@ -8,7 +8,7 @@
 2. Запусти `docker compose up --build`.
 3. Открой:
    - Сайт: `http://localhost:8080`
-   - Grafana: `http://localhost:3000` (admin/admin)
+   - Grafana: `http://localhost:3000` (admin/admin — только для локального запуска)
    - Prometheus: `http://localhost:9090`
 
 ## Генерация постов
@@ -26,7 +26,7 @@ k6 run load/k6.js
 ## CI/CD
 
 GitHub Actions:
-- `ci.yml` — тесты Go.
+- `ci.yml` — `go vet` и `go test -race`: юнит-тесты расписания публикаций, слагов, конфига и разбора ответа LLM.
 - `deploy.yml` — сборка Docker, пуш в GHCR, деплой на сервер через SSH.
 
 Для деплоя нужны секреты в GitHub:

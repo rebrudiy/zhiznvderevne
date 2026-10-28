@@ -12,7 +12,7 @@ import (
 )
 
 type Client struct {
-	client *openai.Client
+	client openai.Client
 	model  openai.ChatModel
 	temp   float64
 	maxTok int

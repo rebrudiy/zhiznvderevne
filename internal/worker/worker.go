@@ -204,20 +204,27 @@ func parseClock(s string, base time.Time) (time.Time, error) {
 	if len(parts) != 2 {
 		return time.Time{}, fmt.Errorf("invalid time %s", s)
 	}
-	hour := atoi(parts[0])
-	min := atoi(parts[1])
+	hour, okH := atoi(parts[0])
+	min, okM := atoi(parts[1])
+	if !okH || !okM || hour > 23 || min > 59 {
+		return time.Time{}, fmt.Errorf("invalid time %s", s)
+	}
 	return time.Date(base.Year(), base.Month(), base.Day(), hour, min, 0, 0, base.Location()), nil
 }
 
-func atoi(s string) int {
+// atoi разбирает неотрицательное число из 1–2 цифр (часы/минуты).
+func atoi(s string) (int, bool) {
+	if len(s) == 0 || len(s) > 2 {
+		return 0, false
+	}
 	var n int
 	for _, ch := range s {
 		if ch < '0' || ch > '9' {
-			return 0
+			return 0, false
 		}
 		n = n*10 + int(ch-'0')
 	}
-	return n
+	return n, true
 }
 
 func sanitizeSlug(s string) string {
